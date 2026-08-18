@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velour — Makeup that behaves like skincare</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ivory:#FBF4ED;
+    --ivory-deep:#F3E8DE;
+    --plum:#2B1826;
+    --plum-soft:#4A2F3E;
+    --rose:#C67C87;
+    --rose-deep:#B15E6C;
+    --rose-light:#F1DCDD;
+    --gold:#AD8A56;
+    --sage:#8FA486;
+    --active:#C67C87;
+    --active-name:"Rosewood";
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--ivory);
+    color:var(--plum);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  .label{
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 5vw;
+    background:rgba(251,244,237,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(43,24,38,0.08);
+  }
+  .logo{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:22px;
+    letter-spacing:0.02em;
+  }
+  nav ul{
+    display:flex;gap:36px;list-style:none;
+  }
+  nav a{
+    font-size:13.5px;
+    font-weight:500;
+    position:relative;
+    padding-bottom:3px;
+  }
+  nav a::after{
+    content:"";position:absolute;left:0;bottom:0;width:0;height:1px;
+    background:var(--rose-deep);transition:width .3s ease;
+  }
+  nav a:hover::after{width:100%;}
+  header .cart{
+    font-family:'Space Mono',monospace;font-size:12px;
+    border:1px solid var(--plum);border-radius:100px;
+    padding:8px 16px;
+    transition:background .25s ease, color .25s ease;
+  }
+  header .cart:hover{background:var(--plum);color:var(--ivory);}
+  .navlinks{display:flex;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:8vh 5vw 10vh;
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:40px;
+    align-items:center;
+    min-height:78vh;
+    transition:background 700ms ease;
+  }
+  .hero-eyebrow{
+    color:var(--rose-deep);
+    margin-bottom:22px;
+    display:inline-block;
+  }
+  .hero h1{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:clamp(40px, 5.4vw, 76px);
+    line-height:1.03;
+    letter-spacing:-0.01em;
+    max-width:12ch;
+  }
+  .hero h1 em{
+    font-style:italic;
+    font-weight:400;
+    color:var(--active);
+    transition:color 500ms ease;
+    position:relative;
+    white-space:nowrap;
+  }
+  .hero p.sub{
+    margin-top:26px;
+    max-width:38ch;
+    font-size:16.5px;
+    line-height:1.6;
+    color:var(--plum-soft);
+  }
+  .hero-ctas{
+    margin-top:38px;
+    display:flex;
+    gap:16px;
+    align-items:center;
+  }
+  .btn-primary{
+    font-family:'Space Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    background:var(--plum);
+    color:var(--ivory);
+    padding:16px 30px;
+    border-radius:100px;
+    display:inline-block;
+    transition:transform .3s ease, background 500ms ease;
+  }
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{
+    font-family:'Space Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    border-bottom:1px solid var(--plum);
+    padding-bottom:3px;
+  }
+
+  /* hero visual: illustrated lipstick */
+  .hero-art{
+    position:relative;
+    display:flex;align-items:center;justify-content:center;
+    height:100%;
+  }
+  .hero-art svg{width:min(320px, 80%);height:auto;}
+  #lipstick-fill{transition:fill 500ms ease;}
+  #lipstick-shadow ellipse{transition:fill 500ms ease;}
+
+  .floating-tag{
+    position:absolute;
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    background:var(--ivory);
+    border:1px solid var(--plum);
+    border-radius:100px;
+    padding:7px 14px;
+    top:14%;
+    right:6%;
+    transition:opacity 300ms ease;
+  }
+  #tag-name::before{content:var(--active-name);}
+
+  /* ---------- SHADE STRIP (signature) ---------- */
+  .shade-section{
+    padding:6vh 5vw 10vh;
+    border-top:1px solid rgba(43,24,38,0.08);
+    border-bottom:1px solid rgba(43,24,38,0.08);
+  }
+  .shade-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:44px;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+  .shade-head h2{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:clamp(26px,3vw,38px);
+  }
+  .shade-head p{
+    max-width:34ch;
+    color:var(--plum-soft);
+    font-size:14.5px;
+    line-height:1.6;
+  }
+  .shade-strip{
+    display:flex;
+    gap:22px;
+    flex-wrap:wrap;
+  }
+  .swatch{
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    cursor:pointer;
+    background:none;border:none;
+    font-family:inherit;
+  }
+  .swatch .dot{
+    width:58px;height:58px;border-radius:50%;
+    border:2px solid transparent;
+    box-shadow:inset 0 -6px 10px rgba(0,0,0,0.15), inset 0 4px 6px rgba(255,255,255,0.35);
+    transition:transform 280ms cubic-bezier(.2,.9,.3,1.3), border-color 280ms ease;
+  }
+  .swatch:hover .dot, .swatch:focus-visible .dot{transform:translateY(-6px) scale(1.06);}
+  .swatch.active .dot{border-color:var(--plum);}
+  .swatch span{
+    font-family:'Space Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:0.04em;
+    color:var(--plum-soft);
+    text-align:center;
+  }
+  .swatch:focus-visible{outline:2px solid var(--plum);outline-offset:4px;border-radius:8px;}
+
+  /* ---------- BESTSELLERS ---------- */
+  .shop{padding:10vh 5vw;}
+  .shop-head{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    margin-bottom:50px;flex-wrap:wrap;gap:16px;
+  }
+  .shop-head h2{
+    font-family:'Fraunces',serif;font-weight:500;
+    font-size:clamp(26px,3vw,38px);
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:28px;
+  }
+  .card{
+    background:var(--ivory-deep);
+    border-radius:18px;
+    padding:26px 22px 22px;
+    display:flex;flex-direction:column;
+    transition:transform 350ms ease, box-shadow 350ms ease;
+  }
+  .card:hover{transform:translateY(-6px);box-shadow:0 24px 40px -22px rgba(43,24,38,0.35);}
+  .card .art{
+    height:150px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;
+  }
+  .card .art svg{height:120px;width:auto;}
+  .card .tags{display:flex;gap:6px;margin-bottom:12px;}
+  .card .tags .dot{width:14px;height:14px;border-radius:50%;border:1px solid rgba(43,24,38,0.15);}
+  .card h3{
+    font-family:'Fraunces',serif;font-weight:500;font-size:19px;margin-bottom:6px;
+  }
+  .card p.desc{font-size:13px;color:var(--plum-soft);line-height:1.5;margin-bottom:16px;flex-grow:1;}
+  .card .price-row{
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'Space Mono',monospace;font-size:13px;
+    border-top:1px solid rgba(43,24,38,0.1);padding-top:14px;
+  }
+  .card .add{
+    border:1px solid var(--plum);border-radius:100px;
+    padding:6px 14px;font-size:11px;letter-spacing:0.04em;
+    transition:background 250ms ease, color 250ms ease;
+  }
+  .card .add:hover{background:var(--plum);color:var(--ivory);}
+
+  /* ---------- FORMULA / STORY ---------- */
+  .formula{
+    background:var(--plum);
+    color:var(--ivory);
+    padding:11vh 5vw;
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:60px;
+    align-items:center;
+  }
+  .formula h2{
+    font-family:'Fraunces',serif;font-weight:400;font-style:italic;
+    font-size:clamp(28px,3.4vw,44px);
+    line-height:1.2;
+  }
+  .formula-list{
+    display:grid;
+    gap:26px;
+  }
+  .formula-item{
+    display:flex;gap:18px;
+    border-top:1px solid rgba(251,244,237,0.18);
+    padding-top:22px;
+  }
+  .formula-item .num{
+    font-family:'Space Mono',monospace;font-size:12px;color:var(--rose);
+  }
+  .formula-item h4{
+    font-family:'Fraunces',serif;font-weight:500;font-size:17px;margin-bottom:6px;
+  }
+  .formula-item p{font-size:13.5px;color:rgba(251,244,237,0.7);line-height:1.55;max-width:44ch;}
+
+  /* ---------- PRESS / TESTIMONIAL ---------- */
+  .press{
+    padding:9vh 5vw;
+    text-align:center;
+  }
+  .press .quote{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:400;
+    font-size:clamp(22px,2.8vw,34px);
+    max-width:22ch;margin:0 auto 20px;
+    line-height:1.35;
+  }
+  .press .attrib{
+    font-family:'Space Mono',monospace;font-size:12px;color:var(--plum-soft);
+  }
+
+  /* ---------- NEWSLETTER / FOOTER ---------- */
+  .newsletter{
+    background:var(--rose-light);
+    padding:9vh 5vw;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:26px;
+  }
+  .newsletter h2{
+    font-family:'Fraunces',serif;font-weight:500;
+    font-size:clamp(24px,2.8vw,34px);max-width:14ch;
+  }
+  .newsletter form{
+    display:flex;gap:0;
+    border-bottom:1.5px solid var(--plum);
+    min-width:320px;
+  }
+  .newsletter input{
+    background:none;border:none;outline:none;
+    font-family:'Inter',sans-serif;font-size:14px;
+    padding:10px 4px;flex-grow:1;color:var(--plum);
+  }
+  .newsletter input::placeholder{color:rgba(43,24,38,0.5);}
+  .newsletter button{
+    font-family:'Space Mono',monospace;font-size:12px;letter-spacing:0.05em;
+    background:none;border:none;text-transform:uppercase;cursor:pointer;color:var(--plum);
+    padding:10px 6px;
+  }
+
+  footer{
+    padding:6vh 5vw 4vh;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+  }
+  footer .logo{font-size:18px;}
+  footer .fine{font-family:'Space Mono',monospace;font-size:11px;color:var(--plum-soft);}
+
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr;padding-top:5vh;}
+    .hero-art{order:-1;height:auto;padding:20px 0;}
+    .grid{grid-template-columns:repeat(2,1fr);}
+    .formula{grid-template-columns:1fr;}
+  }
+  @media (max-width:600px){
+    .navlinks{display:none;}
+    .grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">VELOUR</div>
+  <nav class="navlinks">
+    <ul>
+      <li><a href="#shades">Shades</a></li>
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#formula">Formula</a></li>
+      <li><a href="#journal">Journal</a></li>
+    </ul>
+  </nav>
+  <a href="#" class="cart">Bag (0)</a>
+</header>
+
+<section class="hero" id="hero">
+  <div>
+    <span class="hero-eyebrow label">New — Skin Tint SPF 30</span>
+    <h1>Makeup that <em id="hero-word">behaves</em> like skincare.</h1>
+    <p class="sub">Velour blends barrier-safe actives into every formula, so color wears like care. Buildable pigment, zero compromise, in eighteen shades built for real skin.</p>
+    <div class="hero-ctas">
+      <a href="#shop" class="btn-primary">Shop bestsellers</a>
+      <a href="#shades" class="btn-ghost">Find your shade</a>
+    </div>
+  </div>
+  <div class="hero-art">
+    <div class="floating-tag"><span id="tag-name"></span></div>
+    <svg viewBox="0 0 200 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse id="lipstick-shadow" cx="100" cy="322" rx="46" ry="10" fill="#2B1826" opacity="0.12"/>
+      <rect x="66" y="150" width="68" height="150" rx="10" fill="#3A2530"/>
+      <rect x="66" y="150" width="68" height="150" rx="10" fill="url(#caseGrad)" opacity="0.35"/>
+      <rect x="72" y="130" width="56" height="34" rx="4" fill="#AD8A56"/>
+      <path id="lipstick-fill" d="M76 130 L124 130 L114 62 C114 46 100 34 100 34 C100 34 86 46 86 62 Z" fill="#C67C87"/>
+      <path d="M76 130 L124 130 L118 96 L82 96 Z" fill="#000000" opacity="0.06"/>
+      <defs>
+        <linearGradient id="caseGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fff" stop-opacity="0.4"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+<section class="shade-section" id="shades">
+  <div class="shade-head">
+    <div>
+      <h2>Eighteen shades. One swipe.</h2>
+      <p>Hover or tap a shade to preview it across the page — this is exactly how it'll look in the tube.</p>
+    </div>
+    <span class="label" style="color:var(--rose-deep);">Skin Tint SPF 30</span>
+  </div>
+  <div class="shade-strip" id="shadeStrip">
+    <!-- swatches injected by JS -->
+  </div>
+</section>
+
+<section class="shop" id="shop">
+  <div class="shop-head">
+    <h2>Bestsellers</h2>
+    <span class="label" style="color:var(--rose-deep);">04 products</span>
+  </div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="art">
+        <svg viewBox="0 0 100 140" fill="none"><rect x="30" y="50" width="40" height="80" rx="8" fill="#C67C87"/><rect x="34" y="18" width="32" height="36" rx="6" fill="#2B1826"/><rect x="34" y="46" width="32" height="8" fill="#AD8A56"/></svg>
+      </div>
+      <div class="tags">
+        <span class="dot" style="background:#C67C87"></span>
+        <span class="dot" style="background:#B15E6C"></span>
+        <span class="dot" style="background:#8B5A63"></span>
+      </div>
+      <h3>Skin Tint SPF 30</h3>
+      <p class="desc">Sheer, breathable color with mineral SPF and niacinamide. Melts in, never sits on top.</p>
+      <div class="price-row"><span>$34</span><a class="add">Add</a></div>
+    </div>
+
+    <div class="card">
+      <div class="art">
+        <svg viewBox="0 0 100 140" fill="none"><rect x="20" y="60" width="60" height="20" rx="10" fill="#AD8A56"/><rect x="15" y="80" width="70" height="45" rx="10" fill="#F1DCDD"/><circle cx="50" cy="103" r="14" fill="#C67C87"/></svg>
+      </div>
+      <div class="tags">
+        <span class="dot" style="background:#E7B9BE"></span>
+        <span class="dot" style="background:#C67C87"></span>
+        <span class="dot" style="background:#9C5C63"></span>
+      </div>
+      <h3>Cheek Balm Trio</h3>
+      <p class="desc">Cream blush that doubles as lip tint. Fingertip-blendable, squalane-based.</p>
+      <div class="price-row"><span>$28</span><a class="add">Add</a></div>
+    </div>
+
+    <div class="card">
+      <div class="art">
+        <svg viewBox="0 0 100 140" fill="none"><rect x="35" y="20" width="30" height="95" rx="15" fill="#2B1826"/><rect x="41" y="26" width="18" height="55" rx="9" fill="#8FA486"/></svg>
+      </div>
+      <div class="tags">
+        <span class="dot" style="background:#8FA486"></span>
+        <span class="dot" style="background:#D6C8A8"></span>
+      </div>
+      <h3>Barrier Serum Primer</h3>
+      <p class="desc">Ceramide-rich primer that preps skin and locks in makeup for up to 12 hours.</p>
+      <div class="price-row"><span>$42</span><a class="add">Add</a></div>
+    </div>
+
+    <div class="card">
+      <div class="art">
+        <svg viewBox="0 0 100 140" fill="none"><rect x="18" y="45" width="64" height="64" rx="10" fill="#3A2530"/><rect x="26" y="53" width="48" height="48" rx="6" fill="#AD8A56"/><circle cx="50" cy="77" r="14" fill="#C67C87"/></svg>
+      </div>
+      <div class="tags">
+        <span class="dot" style="background:#C67C87"></span>
+        <span class="dot" style="background:#B08D57"></span>
+        <span class="dot" style="background:#7A5560"></span>
+      </div>
+      <h3>Velour Powder Blush</h3>
+      <p class="desc">Silk-milled pigment in a refillable compact. One tap for a flush that lasts.</p>
+      <div class="price-row"><span>$26</span><a class="add">Add</a></div>
+    </div>
+
+  </div>
+</section>
+
+<section class="formula" id="formula">
+  <h2>"We treat every shade like a skincare ingredient — because on your face, that's exactly what it is."</h2>
+  <div class="formula-list">
+    <div class="formula-item">
+      <span class="num label">A</span>
+      <div><h4>Barrier-safe pigments</h4><p>Every colorant is tested alongside our actives, not against them — so wear time never costs you hydration.</p></div>
+    </div>
+    <div class="formula-item">
+      <span class="num label">B</span>
+      <div><h4>Clinical actives, cosmetic finish</h4><p>Niacinamide, squalane and peptides sit inside the same formula as your color, at doses that actually do something.</p></div>
+    </div>
+    <div class="formula-item">
+      <span class="num label">C</span>
+      <div><h4>Shade-matched, not skin-toned</h4><p>Eighteen shades built from real undertone mapping, not a five-shade starter set with your name missing.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="press">
+  <p class="quote">"The only tint that's made me stop wearing foundation entirely."</p>
+  <p class="attrib">— INTO THE GLOSS</p>
+</section>
+
+<section class="newsletter">
+  <h2>Get shade drops first.</h2>
+  <form onsubmit="return false;">
+    <input type="email" placeholder="your@email.com" required>
+    <button type="submit">Subscribe</button>
+  </form>
+</section>
+
+<footer>
+  <div class="logo">VELOUR</div>
+  <div class="fine">© 2026 VELOUR BEAUTY — MADE FOR SKIN THAT MOVES</div>
+</footer>
+
+<script>
+  const shades = [
+    {name:"Rosewood", hex:"#C67C87"},
+    {name:"Terra", hex:"#B4744A"},
+    {name:"Mauve Silk", hex:"#9C7288"},
+    {name:"Sundown", hex:"#D08A5C"},
+    {name:"Fig", hex:"#7A4E5C"},
+    {name:"Praline", hex:"#A8785A"},
+    {name:"Bare Almond", hex:"#D9B79A"},
+    {name:"Plum Berry", hex:"#8C4E5E"},
+    {name:"Honey", hex:"#C99A5B"},
+    {name:"Umber", hex:"#6E4A3E"}
+  ];
+
+  const strip = document.getElementById('shadeStrip');
+  const root = document.documentElement;
+  const tagName = document.getElementById('tag-name');
+  const lipstickFill = document.getElementById('lipstick-fill');
+
+  function setActive(hex, name, btn){
+    root.style.setProperty('--active', hex);
+    root.style.setProperty('--active-name', `"${name}"`);
+    lipstickFill.setAttribute('fill', hex);
+    document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+  }
+
+  shades.forEach((s, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'swatch';
+    btn.setAttribute('aria-label', `Preview shade ${s.name}`);
+    btn.innerHTML = `<span class="dot" style="background:${s.hex}"></span><span>${s.name}</span>`;
+    btn.addEventListener('mouseenter', () => setActive(s.hex, s.name, btn));
+    btn.addEventListener('focus', () => setActive(s.hex, s.name, btn));
+    btn.addEventListener('click', () => setActive(s.hex, s.name, btn));
+    strip.appendChild(btn);
+    if(i === 0){ setActive(s.hex, s.name, btn); }
+  });
+</script>
+
+</body>
+</html>
